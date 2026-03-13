@@ -1105,9 +1105,12 @@ def _addplot_columns(panid,panels,ydata,apdict,xdates,config,colcount):
         secondary_y = False
         if apdict['secondary_y'] == 'auto':
             yd = [y for y in ydata if not math.isnan(y)]
-            ymhi = math.log(max(math.fabs(np.nanmax(yd)),1e-7),10)
-            ymlo = math.log(max(math.fabs(np.nanmin(yd)),1e-7),10)
-            secondary_y = _auto_secondary_y( panels, panid, ymlo, ymhi )
+            if len(yd) == 0:
+                secondary_y = False
+            else:
+                ymhi = math.log(max(math.fabs(np.nanmax(yd)),1e-7),10)
+                ymlo = math.log(max(math.fabs(np.nanmin(yd)),1e-7),10)
+                secondary_y = _auto_secondary_y( panels, panid, ymlo, ymhi )
         else:
             secondary_y = apdict['secondary_y']
             #print("apdict['secondary_y'] says secondary_y is",secondary_y)
